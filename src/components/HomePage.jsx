@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import Articles from "./homepagecomponent/Articles";
 import { specialities, doctors, services } from "../utils/info";
+import SearchDoctors from "../features/finddoctors/finddoctorcomps/SearchDoctors";
 
 
 function HomePage() {
@@ -28,26 +29,8 @@ function HomePage() {
     return (
         <>
             
-                <div className="d-flex input-group w-75">
-                    <div className="border w-25">
-                        <span>
-                            <i className="bi bi-geo-alt"></i>
-                            <input type="text" name="location" 
-                            className="l-focus p-2 w-75"
-                            placeholder={location}
-                            />
-                        </span>
-                    </div>
-                    <div className=" border w-50">
-                        <span>
-                            <i className="bi bi-search"></i>
-                            <input type="text" name="search"
-                            className="l-focus p-2 w-75"
-                            placeholder="Search doctors,clinics,hospitals,etc.."
-                             />
-                        </span>
-                    </div>
-
+                <div className="w-100">
+                    <SearchDoctors />
                 </div>
                         
           

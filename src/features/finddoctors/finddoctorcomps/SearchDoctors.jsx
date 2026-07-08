@@ -175,6 +175,7 @@ function SearchDoctors() {
 
                             <input
                                 type="text"
+                                name="location"
                                 className="l-focus w-100"
                                 placeholder="Location"
                                 value={location}
@@ -241,6 +242,7 @@ function SearchDoctors() {
 
                             <input
                                 type="text"
+                                name="search"
                                 className="l-focus w-100"
                                 placeholder="Search doctors or speciality..."
                                 value={search}
