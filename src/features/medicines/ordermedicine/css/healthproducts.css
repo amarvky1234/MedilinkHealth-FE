@@ -1,0 +1,15 @@
+.carousel-btn {
+    transition: all 0.3s ease;
+}
+
+.carousel-btn:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.img-card {
+    transition: 0.3s;
+}
+
+.img-card:hover {
+    padding: 5px;
+}

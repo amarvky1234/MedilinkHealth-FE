@@ -1,0 +1,94 @@
+*{
+    box-sizing:border-box;
+}
+
+body{
+    overflow-x:hidden;
+}
+
+img{
+    max-width:100%;
+    height:auto;
+}
+
+.custom-badge {
+    background-color: rgb(58, 48, 111);
+    color: white;
+    border-radius: 10px;
+    padding-inline: 0.5em;
+    font-size: x-small;
+}
+
+.specialities-btn{
+    text-decoration: none;
+    color:#14BEF0;
+    border: 1px solid #14BEF0;
+    padding: 10px 12px 10px 12px;
+    border-radius: 6px;
+}
+
+.service-card {
+    min-height: 420px;
+    overflow: hidden;
+}
+
+.service-card .card-body {
+    padding: 1.5rem;
+}
+
+.service-img {
+   max-width: 100%;
+   max-height: 220px;
+   width: auto;
+   height: auto;
+   object-fit: contain;
+}
+
+.image-wrapper{
+    min-height: 260px;
+    padding: 1.5rem;
+    border-radius:20px 20px 0 0;
+    overflow:hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-section {
+    background: #28328C;
+}
+
+.footer-link {
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 10px;
+    transition: 0.3s;
+}
+
+.footer-link:hover {
+    color: #ffd54f;
+    padding-left: 6px;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section a {
+    transition: 0.3s;
+}
+
+.footer-section a:hover {
+    color: #ffd54f !important;
+}
+
+.footer-section hr {
+    opacity: 0.2;
+}
+
+.l-focus{
+    border: none;
+    outline: none;
+}
+

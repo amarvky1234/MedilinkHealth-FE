@@ -1,0 +1,27 @@
+.img-product {
+    height: 180px;
+    object-fit: cover;
+}
+
+.product-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.15);
+    /* transform: translateY(-5px); */
+}
+
+.product-card h5 {
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
+.product-desc {
+    min-height: 48px;   /* Adjust according to your font size */
+}
+
+.product-price {
+    margin-bottom: 0;
+}

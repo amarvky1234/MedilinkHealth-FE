@@ -1,0 +1,14 @@
+.doctor-img{
+    width:150px;
+    height:190px;
+    object-fit:cover;
+    /* border-radius:12px;
+    border:1px solid #e5e5e5;
+    box-shadow:0 6px 15px rgba(0,0,0,0.12);
+    transition:0.3s ease; */
+    background:#f8f9fa;
+}
+
+/* .doctor-img:hover{
+    transform:scale(1.03);
+} */

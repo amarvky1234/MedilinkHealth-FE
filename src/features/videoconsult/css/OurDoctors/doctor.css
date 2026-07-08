@@ -1,0 +1,67 @@
+.doctor-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 14px;
+  background: white;
+  transition: .3s;
+  height: 120px;
+}
+
+.doctor-card:hover {
+  /* transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.08); */
+}
+
+.doctor-image {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.doctor-name {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.doctor-speciality {
+  color: #555;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+.doctor-text {
+  color: #666;
+  margin: 0;
+  font-size: 15px;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 58%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,.2);
+  z-index: 5;
+  transition: .3s;
+}
+
+.slider-btn:hover {
+  background: #f5f5f5;
+}
+
+.left-btn {
+  left: -22px;
+}
+
+.right-btn {
+  right: -22px;
+}

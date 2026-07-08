@@ -1,0 +1,60 @@
+.thumbnail{
+
+    width:60px;
+    height:60px;
+
+    border:1px solid #ddd;
+
+    cursor:pointer;
+
+    object-fit:cover;
+}
+
+.thumbnail:hover{
+
+    border:2px solid #00a3ff;
+
+}
+
+.gallery-card{
+
+    border:1px solid #ddd;
+
+    border-radius:8px;
+
+    overflow:hidden;
+
+    width:100%;
+}
+
+.main-image{
+
+    width:100%;
+
+    height:420px;
+
+    object-fit:contain;
+
+    background:#fff;
+}
+
+.content-scroll{
+
+    height:650px;
+
+    overflow-y:auto;
+
+    padding-right:15px;
+}
+
+.content-scroll::-webkit-scrollbar{
+
+    width:6px;
+}
+
+.content-scroll::-webkit-scrollbar-thumb{
+
+    background:#bbb;
+
+    border-radius:10px;
+}

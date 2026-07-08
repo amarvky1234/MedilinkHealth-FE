@@ -1,0 +1,22 @@
+.search-box {
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: text;
+}
+
+.search-box:focus-within {
+  border-color: #5c4817;
+  box-shadow: 0 0 0 0.2rem rgba(102, 60, 209, 0.25);
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: none;
+}

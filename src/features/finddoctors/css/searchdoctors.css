@@ -1,0 +1,138 @@
+.doctor-search-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:12px 16px;
+    cursor:pointer;
+    transition:.25s;
+    border-bottom:1px solid #ececec;
+}
+
+.doctor-search-item:hover{
+    background:#f5f8ff;
+}
+
+.doctor-search-img{
+    width: 50px;
+    height:50px;
+    border-radius:50%;
+    object-fit:cover;
+    border:1px solid #ddd;
+}
+
+.doctor-search-info{
+    flex:1;
+    text-align:left;
+}
+
+.doctor-search-info h6{
+    margin:0;
+    font-size:15px;
+    font-weight:600;
+    color:#222;
+}
+
+.doctor-search-info p{
+    margin:3px 0;
+    color:#5a4ebd;
+    font-size:13px;
+    font-weight:600;
+}
+
+.doctor-search-info small{
+    color:#666;
+    display:block;
+}
+
+.doctor-city{
+    margin-top:4px;
+    color:#888;
+    font-size:12px;
+}
+
+.search-dropdown{
+    position:absolute;
+    top:55px;
+    left:0px;
+    width:100%;
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    z-index:9999;
+    max-height:380px;
+    overflow-y:auto;
+}
+
+
+/* ===========================
+   Location Dropdown
+=========================== */
+
+.location-dropdown{
+    position:absolute;
+    top:55px;
+    left:0;
+    width:100%;
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    z-index:9999;
+    max-height:300px;
+    overflow-y:auto;
+}
+
+.location-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 16px;
+    cursor:pointer;
+    transition:.25s;
+    border-bottom:1px solid #eee;
+}
+
+.location-item:last-child{
+    border-bottom:none;
+}
+
+.location-item:hover{
+    background:#f5f8ff;
+}
+
+.location-item i{
+    color:#5a4ebd;
+    font-size:18px;
+}
+
+.location-info{
+    display:flex;
+    flex-direction:column;
+}
+
+.location-info h6{
+    margin:0;
+    font-size:15px;
+    font-weight:600;
+    color:#222;
+}
+
+.location-info small{
+    color:#777;
+    font-size:12px;
+}
+
+.see-all-item{
+    padding:12px;
+    text-align:center;
+    font-weight:600;
+    color:#14bef0;
+    cursor:pointer;
+    border-top:1px solid #eee;
+    background:#fff;
+}
+
+.see-all-item:hover{
+    background:#f5f5f5;
+}
