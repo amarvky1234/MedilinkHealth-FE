@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useGetDoctorQuery } from "../../services/doctorService";
 import Navbar from "../../components/Navbar";
@@ -13,6 +13,7 @@ function MyDoctors() {
 
     const [searchParams] = useSearchParams();
     const [page, setPage] = useState(1);
+    const [allDoctors, setAllDoctors] = useState([]);
     const search = searchParams.get("search") || "";
     const location = searchParams.get("location") || "";
 
@@ -31,12 +32,54 @@ function MyDoctors() {
     //     return cityMatch && searchMatch;
     // });
 
-    const { data, isLoading, error } = useGetDoctorQuery({
+    const { data ,isFetching, isLoading, error } = useGetDoctorQuery({
         search,
         location,
         page
     });
-    const filteredDoctors = data?.doctors || [];
+    useEffect(() => {
+
+        if (data?.doctors) {
+
+            if (page === 1) {
+                setAllDoctors(data.doctors);
+            } else {
+                setAllDoctors(prev => [...prev, ...data.doctors]);
+            }
+
+        }
+
+    }, [data]);
+
+    useEffect(() => {
+
+        setPage(1);
+        setAllDoctors([]);
+
+    }, [search, location]);
+
+    useEffect(() => {
+
+    const handleScroll = () => {
+
+            if (
+                window.innerHeight + window.scrollY >=
+                document.body.offsetHeight - 200
+            ) {
+
+                if (page < data?.totalPages) {
+                    setPage(prev => prev + 1);
+                }
+
+            }
+
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+
+    }, [page, data]);
 
     if (isLoading) {
         return <h2 className="text-center mt-5">Loading...</h2>;
@@ -64,13 +107,13 @@ function MyDoctors() {
                         </h3>
 
                         <p className="text-muted mb-0">
-                            {filteredDoctors.length} Doctor{filteredDoctors.length !== 1 ? "s" : ""} Found
+                            {allDoctors.length} Doctor{allDoctors.length !== 1 ? "s" : ""} Found
                         </p>
 
                     </div>
                 )}
 
-                {filteredDoctors.length === 0 ? (
+                {allDoctors.length === 0 ? (
                     <div className="text-center mt-5">
                         <h3>No doctors found</h3>
                         <p>
@@ -82,7 +125,7 @@ function MyDoctors() {
                 ) : (
                     <>
                         <div className="row g-4">
-                            {filteredDoctors.map((doctor) => (
+                            {allDoctors.map((doctor) => (
 
                                 <div
                                     className="col-12 col-md-6 col-xl-4"
@@ -148,7 +191,7 @@ function MyDoctors() {
                         </div>
 
                         {/* Pagination */}
-                        <div className="d-flex justify-content-center align-items-center gap-3 my-5">
+                        {/* <div className="d-flex justify-content-center align-items-center gap-3 my-5">
 
                             <button
                                 className="btn btn-outline-primary"
@@ -170,13 +213,21 @@ function MyDoctors() {
                                 Next
                             </button>
 
-                        </div>
+                        </div> */}
+                        {isFetching && page > 1 && (
+                            <div className="text-center my-4">
+                                <div className="spinner-border text-primary" role="status"></div>
+                                <p className="mt-2">Loading more doctors...</p>
+                            </div>
+                        )}
                     </>
                 )}
 
             </div>
 
-            <FooterComp />
+            <div className="mt-4">
+                <FooterComp />
+            </div>
         </>
     );
 }

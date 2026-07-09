@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Articles from "./homepagecomponent/Articles";
 import { specialities, doctors, services } from "../utils/info";
 import SearchDoctors from "../features/finddoctors/finddoctorcomps/SearchDoctors";
+import FooterComp from "./FooterComp";
 
 
 function HomePage() {
@@ -163,7 +164,9 @@ function HomePage() {
                     <Articles></Articles>
             </div>
             
-            
+            <div className="w-100">
+                <FooterComp />
+            </div>
         </>
     )
 }

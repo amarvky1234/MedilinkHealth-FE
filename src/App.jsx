@@ -10,7 +10,6 @@ function App() {
       <div>
         <Navbar></Navbar>
         <HomePage></HomePage>
-        <FooterComp></FooterComp>
         {/* <Outlet></Outlet> */}
       </div>
     </div>

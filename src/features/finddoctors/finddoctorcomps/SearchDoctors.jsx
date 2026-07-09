@@ -90,26 +90,6 @@ function SearchDoctors() {
         city.toLowerCase().includes(location.toLowerCase())
     );
 
-    // const searchText = search.replace(/^dr\.?\s*/i, "").toLowerCase();
-
-    // const filteredDoctors = doctors.filter((doctor) => {
-
-    //     const doctorName = doctor.name.toLowerCase();
-
-    //     const cityMatch = location
-    //         ? doctor.city.toLowerCase().startsWith(location.toLowerCase())
-    //         : true;
-
-    //     const searchMatch = search
-    //         ? doctor.specialization
-    //             .toLowerCase()
-    //             .includes(searchText) ||
-    //         doctorName.includes(searchText)
-    //         : true;
-
-    //     return cityMatch && searchMatch;
-    // });
-
     const filteredDoctors = doctors;
 
     const visibleDoctors = showAllDoctors
