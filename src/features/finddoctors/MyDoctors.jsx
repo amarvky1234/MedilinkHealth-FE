@@ -7,6 +7,7 @@ import FindandBook from "./finddoctorcomps/FindandBook";
 import SearchDoctors from "./finddoctorcomps/SearchDoctors";
 import FooterComp from "../../components/FooterComp";
 
+import "./css/mydoctors.css";
 
 function MyDoctors() {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ function MyDoctors() {
     //     return cityMatch && searchMatch;
     // });
 
-    const { data ,isFetching, isLoading, error } = useGetDoctorQuery({
+    const { data, isFetching, isLoading, error } = useGetDoctorQuery({
         search,
         location,
         page
@@ -60,7 +61,7 @@ function MyDoctors() {
 
     useEffect(() => {
 
-    const handleScroll = () => {
+        const handleScroll = () => {
 
             if (
                 window.innerHeight + window.scrollY >=
@@ -90,145 +91,168 @@ function MyDoctors() {
     }
 
     return (
-        <>
+
+        <div className="min-vh-100 d-flex flex-column">
             <Navbar />
 
-            <div>
-                <SearchDoctors />
-            </div>
+            <main className="flex-grow-1">
+                <div>
+                    <SearchDoctors />
+                </div>
 
-            <div className="container">
+                <div className="container">
 
-                {(location || search) && (
-                    <div className="mb-4">
+                    {(location || search) && (
+                        <div className="mb-4">
 
-                        <h3 className="fw-bold">
-                            {search || "All Doctors"} {location && `in ${location}`}
-                        </h3>
+                            <h3 className="fw-bold">
+                                {search || "All Doctors"} {location && `in ${location}`}
+                            </h3>
 
-                        <p className="text-muted mb-0">
-                            {allDoctors.length} Doctor{allDoctors.length !== 1 ? "s" : ""} Found
-                        </p>
+                            <p className="text-muted mb-0">
+                                {allDoctors.length} Doctor{allDoctors.length !== 1 ? "s" : ""} Found
+                            </p>
 
-                    </div>
-                )}
+                        </div>
+                    )}
 
-                {allDoctors.length === 0 ? (
-                    <div className="text-center mt-5">
-                        <h3>No doctors found</h3>
-                        <p>
-                            No doctors available for{" "}
-                            <strong>{search}</strong>
-                            {location && <> in <strong>{location}</strong></>}
-                        </p>
-                    </div>
-                ) : (
-                    <>
-                        <div className="row g-4">
-                            {allDoctors.map((doctor) => (
+                    {allDoctors.length === 0 ? (
+                        <div className="text-center mt-5">
+                            <h3>No doctors found</h3>
+                            <p>
+                                No doctors available for{" "}
+                                <strong>{search}</strong>
+                                {location && <> in <strong>{location}</strong></>}
+                            </p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="row g-4">
+                                {allDoctors.map((doctor) => (
 
-                                <div
-                                    className="col-12 col-md-6 col-xl-4"
-                                    key={doctor._id}
-                                >
                                     <div
-                                        className="card h-100 shadow-sm"
-                                        style={{ cursor: "pointer" }}
-                                        onClick={() => navigate(`/doctor/${doctor._id}`)}
+                                        className="col-12"
+                                        key={doctor._id}
                                     >
-                                        <div className="card-body d-flex flex-column">
+                                        <div
+                                            className="mydoctor-card"
+                                            style={{ cursor: "pointer" }}
+                                        // onClick={() => navigate(`/doctor/${doctor._id}`)}
+                                        >
+                                            <div className="">
 
-                                            <div className="d-flex align-items-center mb-3 gap-3">
-                                                <img
-                                                    src={doctor.photo}
-                                                    alt={doctor.name}
-                                                    style={{
-                                                        objectFit: "cover",
-                                                        objectPosition: "center",
-                                                        borderRadius: "50%",
-                                                        width: "100px",
-                                                        height: "100px"
-                                                    }}
-                                                />
+                                                <div className="row align-items-center">
 
-                                                <div>
-                                                    <h5 className="card-title mb-1">
-                                                        {doctor.name}
-                                                    </h5>
+                                                    {/* Left Image */}
+                                                    <div className="col-md-2 text-center">
+                                                        <img
+                                                            src={doctor.photo}
+                                                            alt={doctor.name}
+                                                            className="mydoctor-photo"
+                                                        />
 
-                                                    <p className="text-muted mb-0">
-                                                        {doctor.specialization}
-                                                    </p>
+                                                        <p
+                                                            className="view-profile"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                navigate(`/doctor/${doctor._id}`);
+                                                            }}
+                                                        >
+                                                            View Profile
+                                                        </p>
+                                                    </div>
+
+                                                    {/* Middle */}
+                                                    <div className="col-md-7">
+                                                        <h3 className="mydoctor-name">
+                                                            {doctor.name}
+                                                        </h3>
+
+                                                        <p className="mydoctor-speciality">
+                                                            {doctor.specialization}
+                                                        </p>
+
+                                                        <p className="mydoctor-exp">
+                                                            {doctor.experience} Years experience overall
+                                                        </p>
+
+                                                        <p className="mydoctor-hospital">
+                                                            <strong>{doctor.city}</strong> • {doctor.hospital}
+                                                        </p>
+
+                                                        <p className="mydoctor-fee">
+                                                            ₹{doctor.consultationFee} Consultation fee
+                                                        </p>
+                                                        <hr />
+
+                                                        <div className="mydoctor-rating">
+
+                                                            <span className="rating-box">
+
+                                                                👍 96%
+
+                                                            </span>
+
+                                                            <span className="story">
+
+                                                                50 Patient Stories
+
+                                                            </span>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    {/* Right */}
+                                                    <div className="col-md-3 text-center">
+                                                        <p className="available">
+                                                            <i className="bi bi-calendar3 me-2"></i>
+                                                            Available Today
+                                                        </p>
+
+                                                        <button
+                                                            className="btn btn-info text-white w-100 mb-3"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                navigate(`/doctor/${doctor._id}`);
+                                                            }}
+                                                        >
+                                                            Book Clinic Visit
+                                                        </button>
+
+                                                        <button
+                                                            className="btn btn-outline-primary w-100 mt-2"
+                                                            onClick={(e) => e.stopPropagation()}
+                                                        >
+                                                            Contact Clinic
+                                                        </button>
+                                                    </div>
+
                                                 </div>
+
                                             </div>
-
-                                            <p><strong>Email:</strong> {doctor.email}</p>
-
-                                            <p><strong>Phone:</strong> {doctor.phone}</p>
-
-                                            <p><strong>Experience:</strong> {doctor.experience} Years</p>
-
-                                            <p><strong>Qualification:</strong> {doctor.qualification}</p>
-
-                                            <p><strong>Hospital:</strong> {doctor.hospital}</p>
-
-                                            <p><strong>City:</strong> {doctor.city}</p>
-
-                                            <div className="mt-auto pt-3 border-top">
-                                                <strong>
-                                                    Consultation Fee :
-                                                    <span className="text-primary">
-                                                        {" "}₹{doctor.consultationFee}
-                                                    </span>
-                                                </strong>
-                                            </div>
-
                                         </div>
                                     </div>
-                                </div>
 
-                            ))}
-                        </div>
-
-                        {/* Pagination */}
-                        {/* <div className="d-flex justify-content-center align-items-center gap-3 my-5">
-
-                            <button
-                                className="btn btn-outline-primary"
-                                disabled={page === 1}
-                                onClick={() => setPage(page - 1)}
-                            >
-                                Previous
-                            </button>
-
-                            <span className="fw-bold">
-                                Page {data?.page} of {data?.totalPages}
-                            </span>
-
-                            <button
-                                className="btn btn-primary"
-                                disabled={page === data?.totalPages}
-                                onClick={() => setPage(page + 1)}
-                            >
-                                Next
-                            </button>
-
-                        </div> */}
-                        {isFetching && page > 1 && (
-                            <div className="text-center my-4">
-                                <div className="spinner-border text-primary" role="status"></div>
-                                <p className="mt-2">Loading more doctors...</p>
+                                ))}
                             </div>
-                        )}
-                    </>
-                )}
 
-            </div>
+                            {isFetching && page > 1 && (
+                                <div className="text-center my-4">
+                                    <div className="spinner-border text-primary" role="status"></div>
+                                    <p className="mt-2">Loading more doctors...</p>
+                                </div>
+                            )}
+                        </>
+                    )}
 
-            <div className="mt-4">
-                <FooterComp />
-            </div>
-        </>
+                </div>
+
+            </main>
+            <FooterComp />
+
+        </div>
+
     );
 }
 

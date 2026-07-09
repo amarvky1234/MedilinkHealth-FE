@@ -12,7 +12,7 @@ function SearchDoctors() {
     const [showDropdown, setShowDropdown] = useState(false);
 
     const dropdownRef = useRef(null);
-    
+
 
     const [location, setLocation] = useState("");
     const [search, setSearch] = useState("");
@@ -28,7 +28,7 @@ function SearchDoctors() {
 
     }, [search]);
 
-    
+
 
 
     const locations = [
@@ -253,8 +253,17 @@ function SearchDoctors() {
                                                         );
                                                     }}
                                                 >
-                                                    <i className="bi bi-search me-2"></i>
-                                                    {item}
+                                                    <div className="search-left">
+                                                        <div className="search-icon">
+                                                            <i className="bi bi-search"></i>
+                                                        </div>
+
+                                                        <span>{item}</span>
+                                                    </div>
+
+                                                    <span className="search-type">
+                                                        SPECIALITY
+                                                    </span>
                                                 </div>
                                             ))}
                                         </>

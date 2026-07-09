@@ -1,0 +1,114 @@
+.mydoctor-card{
+    border-bottom: 1px solid;
+    /* overflow:hidden; */
+}
+
+.mydoctor-card:hover{
+
+    box-shadow:0 8px 20px rgba(0,0,0,.1);
+
+}
+
+.mydoctor-photo{
+
+    width:130px;
+
+    height:130px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+}
+
+.view-profile{
+
+    color:#14bef0;
+
+    margin-top:12px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}
+
+.mydoctor-name{
+
+    color:#14bef0;
+
+    font-size:30px;
+
+    margin-bottom:8px;
+
+}
+
+.mydoctor-speciality{
+
+    color:#555;
+
+    font-size:18px;
+
+    margin-bottom:5px;
+
+}
+
+.mydoctor-exp{
+
+    color:#666;
+
+}
+
+.mydoctor-hospital{
+
+    font-size:17px;
+
+}
+
+.mydoctor-fee{
+
+    font-size:20px;
+
+}
+
+.mydoctor-rating{
+
+    display:flex;
+
+    gap:20px;
+
+    align-items:center;
+
+}
+
+.rating-box{
+
+    background:green;
+
+    color:white;
+
+    padding:5px 12px;
+
+    border-radius:5px;
+
+    font-weight:bold;
+
+}
+
+.story{
+
+    color:#14bef0;
+
+    font-weight:600;
+
+}
+
+.available{
+
+    color:green;
+
+    font-weight:bold;
+
+    margin-bottom:20px;
+
+}

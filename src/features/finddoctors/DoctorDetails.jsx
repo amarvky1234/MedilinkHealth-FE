@@ -1,20 +1,49 @@
 import { useParams } from "react-router-dom";
-import { useGetDoctorQuery } from "../../services/doctorService";
+import { useGetDoctorByIdQuery } from "../../services/doctorService";
+import { useBookAppointmentMutation } from "../../services/appointmentService";
 import Navbar from "../../components/Navbar";
 
 import "./css/doctordetails.css";
+import { useState } from "react";
 
 function DoctorDetails() {
+    const [date, setDate] = useState("");
+    const [time, setTime] = useState("");
+    const [bookAppointment] = useBookAppointmentMutation();
+
+    const handleBook = async () => {
+        try {
+                await bookAppointment({
+                    doctorId: doctor._id,
+                    appointmentDate: date,
+                    appointmentTime: time
+                }).unwrap();
+
+                alert(`Appointment Confirmed!
+
+                    Doctor: ${doctor.name}
+                    Hospital: ${doctor.hospital}
+                    Date: ${date}
+                    Time: ${time}`);
+                            } catch (err) {
+                                alert("Booking failed");
+            }
+    };
 
     const { id } = useParams();
 
-    const { data = [], isLoading } = useGetDoctorQuery();
+    const {
+        data: doctor,
+        isLoading,
+        error,
+    } = useGetDoctorByIdQuery(id);
 
     if (isLoading) return <h2>Loading...</h2>;
 
-    const doctor = data.find((item) => item._id === id);
+    if (error) return <h2>Error...</h2>;
 
     if (!doctor) return <h2>Doctor Not Found</h2>;
+
 
     return (
         <>
@@ -25,7 +54,7 @@ function DoctorDetails() {
                 <div className="card shadow border-0">
 
                     <div className="card-body">
-                        
+
 
                         <div className="row">
 
@@ -34,7 +63,7 @@ function DoctorDetails() {
                                 <div className="d-flex">
 
                                     <img
-                                       src={doctor.photo}
+                                        src={doctor.photo}
                                         alt={doctor.name}
                                         className="doctor-img"
                                     />
@@ -85,12 +114,18 @@ function DoctorDetails() {
 
                                     <input
                                         type="date"
+                                        name="date"
                                         className="form-control mb-3"
+                                        value={date}
+                                        onChange={(e) => setDate(e.target.value)}
                                     />
 
                                     <label>Select Time</label>
 
-                                    <select className="form-select mb-3">
+                                    <select className="form-select mb-3"
+                                        value={time}
+                                        onChange={(e) => setTime(e.target.value)}
+                                    >
 
                                         <option>10:00 AM</option>
                                         <option>12:00 PM</option>
@@ -100,7 +135,9 @@ function DoctorDetails() {
 
                                     </select>
 
-                                    <button className="btn btn-primary w-100">
+                                    <button className="btn btn-primary w-100"
+                                        onClick={handleBook}
+                                    >
                                         Book Appointment
                                     </button>
 

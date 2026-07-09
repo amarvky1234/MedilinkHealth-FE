@@ -29,6 +29,13 @@ export const doctorApi = createApi({
             }),
         }),
 
+        getDoctorById: builder.query({
+            query: (id) => ({
+                url: `get/${id}`,
+                method: "GET",
+            }),
+        }),
+
         addDoctor: builder.mutation({
             query: (details) => {
                 return {
@@ -44,5 +51,6 @@ export const doctorApi = createApi({
 
 export const {
     useGetDoctorQuery,
+    useGetDoctorByIdQuery,
     useAddDoctorMutation,
 } = doctorApi;
