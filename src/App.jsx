@@ -6,13 +6,17 @@ import FooterComp from "./components/FooterComp";
 
 function App() {
   return(
-    <div className="d-flex justify-content-center">
-      <div>
-        <Navbar></Navbar>
-        <HomePage></HomePage>
-        {/* <Outlet></Outlet> */}
+    <>
+      
+
+      <div className="d-flex justify-content-center">
+        <div>
+          <Navbar></Navbar>
+          <HomePage></HomePage>
+          {/* <Outlet></Outlet> */}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

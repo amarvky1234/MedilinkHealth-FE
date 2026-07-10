@@ -5,29 +5,46 @@ import Navbar from "../../components/Navbar";
 
 import "./css/doctordetails.css";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function DoctorDetails() {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
+    const [success, setSuccess] = useState(false);
+    const [bookingDetails, setBookingDetails] = useState(null);
     const [bookAppointment] = useBookAppointmentMutation();
 
     const handleBook = async () => {
+        if (!date || !time) {
+            alert("Please select date and time.");
+            return;
+        }
+
         try {
-                await bookAppointment({
-                    doctorId: doctor._id,
-                    appointmentDate: date,
-                    appointmentTime: time
-                }).unwrap();
+            await bookAppointment({
+                doctorId: doctor._id,
+                appointmentDate: date,
+                appointmentTime: time
+            }).unwrap();
 
-                alert(`Appointment Confirmed!
+            setBookingDetails({
+                date,
+                time,
+            });
+            console.log("before toaster");
+            toast.success("Appointment booked successfully!");
+            console.log("after toaster");
 
-                    Doctor: ${doctor.name}
-                    Hospital: ${doctor.hospital}
-                    Date: ${date}
-                    Time: ${time}`);
-                            } catch (err) {
-                                alert("Booking failed");
-            }
+            setSuccess(true);
+
+            // Optional: Clear the form
+            setDate("");
+            setTime("");
+        } catch (err) {
+            setSuccess(false);
+            //alert("Booking failed");
+            alert("Booking failed");
+        }
     };
 
     const { id } = useParams();
@@ -152,7 +169,27 @@ function DoctorDetails() {
                 </div>
 
             </div>
+            {success && (
+                <div className="alert alert-success mt-3">
+                    <h5>Appointment Confirmed 🎉</h5>
 
+                    <p>
+                        <strong>Doctor:</strong> {doctor.name}
+                    </p>
+
+                    <p>
+                        <strong>Hospital:</strong> {doctor.hospital}
+                    </p>
+
+                    <p>
+                        <strong>Date:</strong> {bookingDetails?.date}
+                    </p>
+
+                    <p>
+                        <strong>Time:</strong> {bookingDetails?.time}
+                    </p>
+                </div>
+            )}
         </>
     );
 }
