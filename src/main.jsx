@@ -17,8 +17,6 @@ import MyDoctors from './features/finddoctors/MyDoctors.jsx';
 import Medicines from './features/medicines/Medicines.jsx';
 import ProductDescription from './features/medicines/ordermedicine/ProductDescription.jsx';
 import DoctorDetails from './features/finddoctors/DoctorDetails.jsx';
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
     {
@@ -77,10 +75,6 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
         <>
             <RouterProvider router={router} />
-            <ToastContainer
-                position="top-right"
-                autoClose={3000}
-            />
         </>
     </Provider>
 )

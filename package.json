@@ -17,6 +17,7 @@
     "react-redux": "^9.3.0",
     "react-router-dom": "^6.30.2",
     "react-toastify": "^11.1.0",
+    "sweetalert2": "^11.26.25",
     "swiper": "^14.0.1"
   },
   "devDependencies": {

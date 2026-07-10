@@ -2,10 +2,10 @@ import { useParams } from "react-router-dom";
 import { useGetDoctorByIdQuery } from "../../services/doctorService";
 import { useBookAppointmentMutation } from "../../services/appointmentService";
 import Navbar from "../../components/Navbar";
+import Swal from "sweetalert2";
 
 import "./css/doctordetails.css";
 import { useState } from "react";
-import { toast } from "react-toastify";
 
 function DoctorDetails() {
     const [date, setDate] = useState("");
@@ -14,39 +14,64 @@ function DoctorDetails() {
     const [bookingDetails, setBookingDetails] = useState(null);
     const [bookAppointment] = useBookAppointmentMutation();
 
-    const handleBook = async () => {
-        if (!date || !time) {
-            alert("Please select date and time.");
-            return;
-        }
+    // const handleBook = async () => {
+    //     if (!date || !time) {
+    //         alert("Please select date and time.");
+    //         return;
+    //     }
 
+    //     try {
+    //         await bookAppointment({
+    //             doctorId: doctor._id,
+    //             appointmentDate: date,
+    //             appointmentTime: time
+    //         }).unwrap();
+
+    //         setBookingDetails({
+    //             date,
+    //             time,
+    //         });
+
+    //         setSuccess(true);
+
+    //         // Optional: Clear the form
+    //         setDate("");
+    //         setTime("");
+    //     } catch (err) {
+    //         setSuccess(false);
+    //         //alert("Booking failed");
+    //         alert("Booking failed");
+    //     }
+    // };
+
+
+    const handleBook = async () => {
         try {
             await bookAppointment({
                 doctorId: doctor._id,
                 appointmentDate: date,
-                appointmentTime: time
+                appointmentTime: time,
             }).unwrap();
 
-            setBookingDetails({
-                date,
-                time,
+            Swal.fire({
+                icon: "success",
+                title: "Appointment Confirmed!",
+                html: `
+                    <b>Doctor:</b> ${doctor.name}<br>
+                    <b>Hospital:</b> ${doctor.hospital}<br>
+                    <b>Date:</b> ${date}<br>
+                    <b>Time:</b> ${time}
+                `,
+                confirmButtonText: "OK",
             });
-            console.log("before toaster");
-            toast.success("Appointment booked successfully!");
-            console.log("after toaster");
-
-            setSuccess(true);
-
-            // Optional: Clear the form
-            setDate("");
-            setTime("");
         } catch (err) {
-            setSuccess(false);
-            //alert("Booking failed");
-            alert("Booking failed");
+            Swal.fire({
+                icon: "error",
+                title: "Booking Failed",
+                text: "Please try again.",
+            });
         }
     };
-
     const { id } = useParams();
 
     const {
@@ -169,7 +194,7 @@ function DoctorDetails() {
                 </div>
 
             </div>
-            {success && (
+            {/* {success && (
                 <div className="alert alert-success mt-3">
                     <h5>Appointment Confirmed 🎉</h5>
 
@@ -189,7 +214,7 @@ function DoctorDetails() {
                         <strong>Time:</strong> {bookingDetails?.time}
                     </p>
                 </div>
-            )}
+            )} */}
         </>
     );
 }
