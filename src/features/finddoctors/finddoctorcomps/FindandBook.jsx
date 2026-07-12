@@ -37,7 +37,7 @@ function FindandBook() {
     ];
 
     return (
-        <div className="hero-section">
+        <div className="hero-section" >
 
             {/* Background Image */}
             <div className="hero-banner">

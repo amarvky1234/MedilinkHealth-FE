@@ -168,7 +168,7 @@ function DoctorDetails() {
                                         value={time}
                                         onChange={(e) => setTime(e.target.value)}
                                     >
-
+                                        <option>select time</option>
                                         <option>10:00 AM</option>
                                         <option>12:00 PM</option>
                                         <option>02:00 PM</option>

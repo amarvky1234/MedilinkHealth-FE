@@ -18,12 +18,24 @@ export const doctorApi = createApi({
     endpoints: (builder) => ({
 
         getDoctor: builder.query({
-            query: ({ search = "", location = "", page = 1 } = {}) => ({
+            query: ({ 
+                search = "", 
+                location = "", 
+                gender="", 
+                experience=0, 
+                fee="",
+                sortBy, 
+                page = 1 
+            } = {}) => ({
                 url: "get",
                 method: "GET",
                 params: {
                     search,
                     location,
+                    gender,
+                    experience,
+                    fee,
+                    sortBy,
                     page,
                 },
             }),

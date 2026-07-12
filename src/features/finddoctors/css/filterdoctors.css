@@ -1,0 +1,181 @@
+.filterdoc{
+    background:#28328C;
+    margin-top:150px;
+    position:relative;
+}
+
+.filter-mar{
+    max-width:1300px;
+    margin:auto;
+    height:70px;
+
+    display:flex;
+    align-items:center;
+    gap:16px;
+
+    padding:0 20px;
+}
+
+
+.filter-box{
+    min-width:180px;
+    height:38px;
+
+    border:1px solid rgba(255,255,255,.4);
+
+    position:relative;
+}
+
+.filter-box>p{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin:0;
+    padding:0 10px;
+
+    color:white;
+    font-size:14px;
+}
+
+.filter-box:hover{
+    border-color:white;
+}
+
+.filter-img{
+    width: 20px;
+    filter: invert(100%);
+}
+
+/* Dropdown */
+
+.filter-dropdown{
+    position: absolute;
+    top: 65px;
+    left: 0;
+    width: 200px;
+    background: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+    overflow: hidden;
+    z-index: 100;
+    animation: dropdown .18s ease;
+}
+
+/* Options */
+
+.filter-option {
+    margin: 0;
+    padding: 8px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-option:last-child {
+    border-bottom: none;
+}
+
+/* Hover Effect */
+
+.filter-option:hover {
+    background: #f4f7ff;
+    color: #28328c;
+    font-weight: 500;
+}
+
+/* Selected/Active Click */
+.filter-option:active {
+    background: #dde7ff;
+}
+
+@keyframes dropdown{
+    from{
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+}
+
+/* all filters */
+.all-filter-dropdown{
+    position:absolute;
+
+    top:70px;
+
+    left:0;
+    right:0;
+
+    background:#28328C;
+    color:white;
+
+    padding:20px;
+
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+
+    gap:40px;
+
+    z-index:9999;
+}
+
+.filter-column h6{
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:12px;
+}
+
+.filter-column label{
+    display:block;
+    margin-bottom:10px;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.filter-column input{
+    margin-right:8px;
+    accent-color:white;
+}
+
+/* reset filter*/
+.reset-filter{
+    margin:0;
+    color:#1B9FD9;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:500;
+}
+
+.reset-filter:hover{
+    text-decoration:none;
+}
+
+/* sortBy */
+.sort-wrapper{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-left:25px;
+}
+
+.sort-label{
+    color:white;
+    font-size:14px;
+}
+
+.sort-dropdown{
+    width:270px;
+}
+
+.sort-box{
+    width:250px;
+    flex:none;
+}

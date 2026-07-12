@@ -121,7 +121,7 @@ function SearchDoctors() {
     }, []);
 
     return (
-        <div className="container text-center p-2">
+        <div className="container text-center p-2 mb-2">
 
             <div className="row justify-content-center">
 
@@ -165,7 +165,15 @@ function SearchDoctors() {
                                 onChange={(e) => {
                                     setLocation(e.target.value);
                                     setShowLocationDropdown(true);
+                                    setShowAllDoctors(false);
                                 }}
+                                // onKeyDown={(e) => {
+                                //     if (e.key === "Enter") {
+                                //         navigate(
+                                //             `/mydoctors?location=${encodeURIComponent(location)}&search=${encodeURIComponent(search)}`
+                                //         );
+                                //     }
+                                // }}
                             />
 
                             {showLocationDropdown && (
@@ -182,6 +190,9 @@ function SearchDoctors() {
                                                 onClick={() => {
                                                     setLocation(city);
                                                     setShowLocationDropdown(false);
+                                                    navigate(
+                                                        `/mydoctors?location=${encodeURIComponent(city)}&search=${encodeURIComponent(search)}`
+                                                    );
                                                 }}
                                             >
                                                 <i className="bi bi-geo-alt-fill"></i>
@@ -232,6 +243,13 @@ function SearchDoctors() {
                                     setShowDropdown(true);
                                     setShowAllDoctors(false);
                                 }}
+                                // onKeyDown={(e) => {
+                                //     if (e.key === "Enter") {
+                                //         navigate(
+                                //             `/mydoctors?location=${encodeURIComponent(location)}&search=${encodeURIComponent(search)}`
+                                //         );
+                                //     }
+                                // }}
                             />
 
                             {showDropdown && (
@@ -312,7 +330,12 @@ function SearchDoctors() {
                                             {filteredDoctors.length > 3 && !showAllDoctors && (
                                                 <div
                                                     className="see-all-item"
-                                                    onClick={() => setShowAllDoctors(true)}
+                                                    onClick={() => {
+                                                        // setShowAllDoctors(true)
+                                                        navigate(
+                                                            `/mydoctors?location=${encodeURIComponent(location)}&search=${encodeURIComponent(search)}`
+                                                        );
+                                                    }}
                                                 >
                                                     See All ({filteredDoctors.length})
                                                 </div>

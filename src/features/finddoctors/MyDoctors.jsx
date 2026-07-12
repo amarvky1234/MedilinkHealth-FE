@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useGetDoctorQuery } from "../../services/doctorService";
 import Navbar from "../../components/Navbar";
@@ -8,42 +8,38 @@ import SearchDoctors from "./finddoctorcomps/SearchDoctors";
 import FooterComp from "../../components/FooterComp";
 
 import "./css/mydoctors.css";
+import FilterDoctor from "./finddoctorcomps/FilterDoctors";
 
 function MyDoctors() {
     const navigate = useNavigate();
-
     const [searchParams] = useSearchParams();
     const [page, setPage] = useState(1);
+    const [openContact, setOpenContact] = useState(null);
     const [allDoctors, setAllDoctors] = useState([]);
     const search = searchParams.get("search") || "";
     const location = searchParams.get("location") || "";
-
-    // Filter doctors
-    // const filteredDoctors = data.filter((doctor) => {
-
-    //     const cityMatch = location
-    //         ? doctor.city.toLowerCase() === location.toLowerCase()
-    //         : true;
-
-    //     const searchMatch = search
-    //         ? doctor.name.toLowerCase().includes(search.toLowerCase()) ||
-    //         doctor.specialization.toLowerCase().includes(search.toLowerCase())
-    //         : true;
-
-    //     return cityMatch && searchMatch;
-    // });
+    const [filters, setFilters] = useState({
+        gender: "",
+        experience: 0,
+        fee: "",
+        sortBy: "",
+    });
+    const loadingMore = useRef(false);
 
     const { data, isFetching, isLoading, error } = useGetDoctorQuery({
         search,
         location,
+        gender: filters.gender,
+        experience: filters.experience,
+        fee: filters.fee,
+        sortBy: filters.sortBy,
         page
     });
     useEffect(() => {
-
         if (data?.doctors) {
-
             if (page === 1) {
                 setAllDoctors(data.doctors);
+                console.log("Doctors: ", allDoctors.length);
             } else {
                 setAllDoctors(prev => [...prev, ...data.doctors]);
             }
@@ -53,7 +49,6 @@ function MyDoctors() {
     }, [data]);
 
     useEffect(() => {
-
         setPage(1);
         setAllDoctors([]);
 
@@ -61,26 +56,29 @@ function MyDoctors() {
 
     useEffect(() => {
 
+        if (!isFetching) {
+            loadingMore.current = false;
+        }
+
+    }, [isFetching]);
+    useEffect(() => {
         const handleScroll = () => {
-
-            if (
-                window.innerHeight + window.scrollY >=
-                document.body.offsetHeight - 200
-            ) {
-
+            if (loadingMore.current) return;
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200) {
                 if (page < data?.totalPages) {
+                    loadingMore.current = true;
                     setPage(prev => prev + 1);
                 }
-
             }
-
         };
 
         window.addEventListener("scroll", handleScroll);
 
-        return () => window.removeEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
 
-    }, [page, data]);
+    }, [page, data?.totalPages]);
 
     if (isLoading) {
         return <h2 className="text-center mt-5">Loading...</h2>;
@@ -93,12 +91,24 @@ function MyDoctors() {
     return (
 
         <div className="min-vh-100 d-flex flex-column">
-            <Navbar />
-
-            <main className="flex-grow-1">
-                <div>
-                    <SearchDoctors />
+            <div className="position-fixed bg-white w-100"
+                style={{ zIndex: 2000 }}
+            >
+                <Navbar />
+            </div>
+            <div className="position-fixed bg-white w-100" style={{ marginTop: "70px", zIndex: "2000" }}>
+                <SearchDoctors />
+            </div>
+            <div style={{ marginTop: "30px" }}>
+                <div className="container-fluid p-0">
+                    <FilterDoctor
+                        filters={filters}
+                        setFilters={setFilters}
+                    />
                 </div>
+            </div>
+
+            <main className="flex-grow-1" style={{ marginTop: "100px" }}>
 
                 <div className="container">
 
@@ -128,14 +138,14 @@ function MyDoctors() {
                     ) : (
                         <>
                             <div className="row g-4">
-                                {allDoctors.map((doctor) => (
+                                {allDoctors.map((doctor, index) => (
 
                                     <div
                                         className="col-12"
-                                        key={doctor._id}
+                                        key={doctor._id + index}
                                     >
                                         <div
-                                            className="mydoctor-card"
+                                            className="border-bottom"
                                             style={{ cursor: "pointer" }}
                                         // onClick={() => navigate(`/doctor/${doctor._id}`)}
                                         >
@@ -145,21 +155,27 @@ function MyDoctors() {
 
                                                     {/* Left Image */}
                                                     <div className="col-md-2 text-center">
-                                                        <img
-                                                            src={doctor.photo}
-                                                            alt={doctor.name}
-                                                            className="mydoctor-photo"
-                                                        />
+                                                        <div className="doctor-image-wrapper">
 
-                                                        <p
-                                                            className="view-profile"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                navigate(`/doctor/${doctor._id}`);
-                                                            }}
-                                                        >
-                                                            View Profile
-                                                        </p>
+                                                            <img
+                                                                src={doctor.photo}
+                                                                alt={doctor.name}
+                                                                className="mydoctor-photo"
+                                                            />
+
+                                                            <p
+                                                                className="view-profile"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+
+                                                                    // later
+                                                                    // navigate(`/doctor/${doctor._id}`);
+                                                                }}
+                                                            >
+                                                                View Profile
+                                                            </p>
+
+                                                        </div>
                                                     </div>
 
                                                     {/* Middle */}
@@ -170,6 +186,10 @@ function MyDoctors() {
 
                                                         <p className="mydoctor-speciality">
                                                             {doctor.specialization}
+                                                        </p>
+
+                                                        <p className="">
+                                                            {doctor.gender}
                                                         </p>
 
                                                         <p className="mydoctor-exp">
@@ -183,9 +203,30 @@ function MyDoctors() {
                                                         <p className="mydoctor-fee">
                                                             ₹{doctor.consultationFee} Consultation fee
                                                         </p>
-                                                        <hr />
+                                                        <div>
+                                                            {openContact === doctor._id && (
+                                                                <div className="contact-panel">
 
-                                                        <div className="mydoctor-rating">
+                                                                    <div className="contact-title">
+                                                                        Contact Clinic
+                                                                    </div>
+
+                                                                    <div className="contact-phone">
+                                                                        <span className="phone-label">Phone number</span>
+
+                                                                        <a
+                                                                            href={`tel:${doctor.phone}`}
+                                                                            className="phone-number"
+                                                                        >
+                                                                            {doctor.phone}
+                                                                        </a>
+                                                                    </div>
+
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* <div className="mydoctor-rating">
 
                                                             <span className="rating-box">
 
@@ -199,7 +240,7 @@ function MyDoctors() {
 
                                                             </span>
 
-                                                        </div>
+                                                        </div> */}
 
                                                     </div>
 
@@ -222,8 +263,14 @@ function MyDoctors() {
 
                                                         <button
                                                             className="btn btn-outline-primary w-100 mt-2"
-                                                            onClick={(e) => e.stopPropagation()}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                setOpenContact(
+                                                                    openContact === doctor._id ? null : doctor._id
+                                                                )
+                                                            }}
                                                         >
+                                                            <i className="bi bi-telephone-fill me-2"></i>
                                                             Contact Clinic
                                                         </button>
                                                     </div>

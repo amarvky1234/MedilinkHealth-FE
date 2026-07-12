@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 function FooterComp() {
   return (
-    <footer className="footer-section text-white pt-5 pb-3">
-      <div className="container">
+    <footer className="footer-section text-white p-5 ">
+     
         <div className="row gy-4">
 
           {/* Logo & About */}
@@ -98,7 +98,8 @@ function FooterComp() {
             © {new Date().getFullYear()} HealthCare. All Rights Reserved.
           </p>
         </div>
-      </div>
+    
+   
     </footer>
   );
 }

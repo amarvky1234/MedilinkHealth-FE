@@ -1,9 +1,10 @@
 import React from "react";
+import BookLabTests from "./BookLabTests";
 
 function LabTest() {
     return(
         <div>
-            <h1>LabTest</h1>
+            <BookLabTests />
         </div>
     )
 }
