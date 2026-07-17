@@ -1,105 +1,85 @@
-import { useGetDoctorQuery } from "../../../services/doctorService";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSearchDoctorsQuery } from "../../../services/doctorService";
 
 import "../css/searchdoctors.css";
 
-function SearchDoctors() {
-    const [showAllDoctors, setShowAllDoctors] = useState(false);
+const locations = [
+    "Hyderabad",
+    "Bengaluru",
+    "Chennai",
+    "Mumbai",
+    "Delhi",
+    "Pune",
+    "Kolkata",
+    "Ahmedabad",
+    "Jaipur",
+    "Lucknow",
+    "Visakhapatnam",
+    "Vijayawada",
+    "Warangal",
+    "Nagpur",
+    "Bhopal",
+    "Indore",
+    "Patna",
+    "Coimbatore",
+    "Kochi",
+    "Mysuru"
+];
 
+const specialities = [
+    "Cardiologist",
+    "Dentist",
+    "Dermatologist",
+    "Neurologist",
+    "Gynecologist",
+    "Orthopedic",
+    "Pediatrician",
+    "General Physician",
+    "ENT Specialist",
+    "Psychiatrist",
+    "Urologist",
+    "Oncologist",
+    "Nephrologist",
+    "Pulmonologist",
+    "Endocrinologist",
+    "Gastroenterologist",
+    "Ophthalmologist",
+    "Radiologist",
+    "Rheumatologist",
+    "Plastic Surgeon"
+];
+
+function SearchDoctors() {
     const navigate = useNavigate();
     const [showLocationDropdown, setShowLocationDropdown] = useState(false);
     const [showDropdown, setShowDropdown] = useState(false);
-
+    const [showAllDoctors, setShowAllDoctors] = useState(false);
     const dropdownRef = useRef(null);
-
-
-    const [location, setLocation] = useState("");
-    const [search, setSearch] = useState("");
-    const [debouncedSearch, setDebouncedSearch] = useState("");
-
-    useEffect(() => {
-
-        const timer = setTimeout(() => {
-            setDebouncedSearch(search);
-        }, 500);
-
-        return () => clearTimeout(timer);
-
-    }, [search]);
-
-
-
-
-    const locations = [
-        "Hyderabad",
-        "Bengaluru",
-        "Chennai",
-        "Mumbai",
-        "Delhi",
-        "Pune",
-        "Kolkata",
-        "Ahmedabad",
-        "Jaipur",
-        "Lucknow",
-        "Visakhapatnam",
-        "Vijayawada",
-        "Warangal",
-        "Nagpur",
-        "Bhopal",
-        "Indore",
-        "Patna",
-        "Coimbatore",
-        "Kochi",
-        "Mysuru"
-    ];
-
-    const specialities = [
-        "Cardiologist",
-        "Dentist",
-        "Dermatologist",
-        "Neurologist",
-        "Gynecologist",
-        "Orthopedic",
-        "Pediatrician",
-        "General Physician",
-        "ENT Specialist",
-        "Psychiatrist",
-        "Urologist",
-        "Oncologist",
-        "Nephrologist",
-        "Pulmonologist",
-        "Endocrinologist",
-        "Gastroenterologist",
-        "Ophthalmologist",
-        "Radiologist",
-        "Rheumatologist",
-        "Plastic Surgeon"
-    ];
-
-    const { data } = useGetDoctorQuery({
-        search: debouncedSearch,
-        location,
-        page: 1
-    });
-
-    const doctors = data?.doctors || [];
-
+    const searchInputRef = useRef(null);
+    const [searchInput, setSearchInput] = useState("");
+    const [locationInput, setLocationInput] = useState("");
 
     const filteredLocations = locations.filter((city) =>
-        city.toLowerCase().includes(location.toLowerCase())
+        city.toLowerCase().includes((locationInput || "").toLowerCase())
     );
 
-    const filteredDoctors = doctors;
+    const { data, } = useSearchDoctorsQuery(
+        {
+            search: searchInput,
+            location: locationInput,
+        },
+        {
+            skip: !searchInput.trim() && !locationInput.trim(),
+        }
+    );
 
-    const visibleDoctors = showAllDoctors
-        ? filteredDoctors
-        : filteredDoctors.slice(0, 3);
+    const filteredDoctors = data?.doctors || [];
+
+    const visibleDoctors = showAllDoctors ? filteredDoctors : filteredDoctors.slice(0, 3);
 
     useEffect(() => {
-
         const handleClickOutside = (event) => {
-
             if (
                 dropdownRef.current &&
                 !dropdownRef.current.contains(event.target)
@@ -107,17 +87,13 @@ function SearchDoctors() {
                 setShowDropdown(false);
                 setShowLocationDropdown(false);
             }
-
         };
-
         document.addEventListener("mousedown", handleClickOutside);
-
         return () =>
             document.removeEventListener(
                 "mousedown",
                 handleClickOutside
             );
-
     }, []);
 
     return (
@@ -156,25 +132,33 @@ function SearchDoctors() {
                             <input
                                 type="text"
                                 name="location"
-                                className="l-focus w-100"
+                                className="l-focus w-100 pe-4"
                                 placeholder="Location"
-                                value={location}
+                                value={locationInput}
                                 onFocus={() =>
                                     setShowLocationDropdown(true)
                                 }
                                 onChange={(e) => {
-                                    setLocation(e.target.value);
+                                    setLocationInput(e.target.value);
                                     setShowLocationDropdown(true);
-                                    setShowAllDoctors(false);
                                 }}
-                                // onKeyDown={(e) => {
-                                //     if (e.key === "Enter") {
-                                //         navigate(
-                                //             `/mydoctors?location=${encodeURIComponent(location)}&search=${encodeURIComponent(search)}`
-                                //         );
-                                //     }
-                                // }}
                             />
+                            {locationInput && (
+                                <i
+                                    className="bi bi-x-circle-fill position-absolute"
+                                    style={{
+                                        right: "10px",
+                                        cursor: "pointer",
+                                        color: "#888"
+                                    }}
+                                    onClick={() => {
+                                        setLocationInput("");
+                                        // navigate(
+                                        //     `/mydoctors?search=${encodeURIComponent(searchInput)}`
+                                        // );
+                                    }}
+                                ></i>
+                            )}
 
                             {showLocationDropdown && (
 
@@ -188,10 +172,12 @@ function SearchDoctors() {
                                                 key={city}
                                                 className="location-item"
                                                 onClick={() => {
-                                                    setLocation(city);
+                                                    setLocationInput(city);
                                                     setShowLocationDropdown(false);
+                                                    searchInputRef.current?.focus();
+                                                    setShowDropdown(true);
                                                     navigate(
-                                                        `/mydoctors?location=${encodeURIComponent(city)}&search=${encodeURIComponent(search)}`
+                                                        `/mydoctors?location=${encodeURIComponent(city)}&search=${encodeURIComponent(searchInput)}`
                                                     );
                                                 }}
                                             >
@@ -232,30 +218,41 @@ function SearchDoctors() {
                             <i className="bi bi-search me-2"></i>
 
                             <input
+                                ref={searchInputRef}
                                 type="text"
                                 name="search"
-                                className="l-focus w-100"
+                                className="l-focus w-100 pe-4"
                                 placeholder="Search doctors or speciality..."
-                                value={search}
+                                value={searchInput}
                                 onFocus={() => setShowDropdown(true)}
                                 onChange={(e) => {
-                                    setSearch(e.target.value);
+                                    setSearchInput(e.target.value);
                                     setShowDropdown(true);
                                     setShowAllDoctors(false);
                                 }}
-                                // onKeyDown={(e) => {
-                                //     if (e.key === "Enter") {
-                                //         navigate(
-                                //             `/mydoctors?location=${encodeURIComponent(location)}&search=${encodeURIComponent(search)}`
-                                //         );
-                                //     }
-                                // }}
                             />
+                            {searchInput && (
+                                <i
+                                    className="bi bi-x-circle-fill position-absolute"
+                                    style={{
+                                        right: "12px",
+                                        cursor: "pointer",
+                                        color: "#888"
+                                    }}
+                                    onClick={() => {
+                                        setSearchInput("");
+                                        setShowDropdown(false);
+                                        // navigate(
+                                        //     `/mydoctors?location=${encodeURIComponent(locationInput)}`
+                                        // );
+                                    }}
+                                ></i>
+                            )}
 
                             {showDropdown && (
                                 <div className="search-dropdown">
 
-                                    {search === "" ? (
+                                    {searchInput === "" ? (
                                         <>
                                             <div className="dropdown-title">
                                                 Common Specialities
@@ -266,8 +263,10 @@ function SearchDoctors() {
                                                     key={item}
                                                     className="search-item"
                                                     onClick={() => {
+                                                        setSearchInput(item);
+                                                        setShowDropdown(false);
                                                         navigate(
-                                                            `/mydoctors?location=${encodeURIComponent(location)}&search=${encodeURIComponent(item)}`
+                                                            `/mydoctors?location=${encodeURIComponent(locationInput)}&search=${encodeURIComponent(item)}`
                                                         );
                                                     }}
                                                 >
@@ -327,13 +326,13 @@ function SearchDoctors() {
 
                                             ))}
 
-                                            {filteredDoctors.length > 3 && !showAllDoctors && (
+                                            {filteredDoctors.length > 3 && !showAllDoctors &&(
                                                 <div
                                                     className="see-all-item"
                                                     onClick={() => {
-                                                        // setShowAllDoctors(true)
+                                                        setShowAllDoctors(true);
                                                         navigate(
-                                                            `/mydoctors?location=${encodeURIComponent(location)}&search=${encodeURIComponent(search)}`
+                                                            `/mydoctors?location=${encodeURIComponent(locationInput)}&search=${encodeURIComponent(searchInput)}`
                                                         );
                                                     }}
                                                 >
@@ -345,13 +344,10 @@ function SearchDoctors() {
                                     ) : (
 
                                         <div className="text-center p-3">
-
                                             <i className="bi bi-search fs-3 text-secondary"></i>
-
                                             <div className="mt-2">
                                                 No doctors found
                                             </div>
-
                                         </div>
 
                                     )}
@@ -366,10 +362,7 @@ function SearchDoctors() {
                 </div>
 
             </div>
-
         </div>
-
     );
 }
-
 export default SearchDoctors;

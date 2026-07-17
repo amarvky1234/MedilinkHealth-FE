@@ -41,6 +41,16 @@ export const doctorApi = createApi({
             }),
         }),
 
+        searchDoctors: builder.query({
+            query: ({ search = "", location = "" }) => ({
+                url: "/search",
+                params: {
+                    search,
+                    location,
+                },
+            }),
+        }),
+
         getDoctorById: builder.query({
             query: (id) => ({
                 url: `get/${id}`,
@@ -63,6 +73,7 @@ export const doctorApi = createApi({
 
 export const {
     useGetDoctorQuery,
+    useSearchDoctorsQuery,
     useGetDoctorByIdQuery,
     useAddDoctorMutation,
 } = doctorApi;

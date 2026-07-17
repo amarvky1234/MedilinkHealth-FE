@@ -133,18 +133,6 @@ function FilterDoctor({ filters, setFilters }) {
                                     {year}+ Years of experience
                                 </p>
                             ))}
-
-                            <p className="filter-option"
-                                onClick={() => {
-                                    setFilters({
-                                        ...filters,
-                                        experience: 0,
-                                    });
-                                    setOpen("");
-                                }}
-                            >
-                                All
-                            </p>
                         </div>
                     )}
                 </div>

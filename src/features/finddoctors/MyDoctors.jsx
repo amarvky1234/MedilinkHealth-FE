@@ -9,6 +9,7 @@ import FooterComp from "../../components/FooterComp";
 
 import "./css/mydoctors.css";
 import FilterDoctor from "./finddoctorcomps/FilterDoctors";
+import Login from "../loginandsignup/Login";
 
 function MyDoctors() {
     const navigate = useNavigate();
@@ -16,8 +17,9 @@ function MyDoctors() {
     const [page, setPage] = useState(1);
     const [openContact, setOpenContact] = useState(null);
     const [allDoctors, setAllDoctors] = useState([]);
-    const search = searchParams.get("search") || "";
-    const location = searchParams.get("location") || "";
+    const [search, setSearch] = useState(searchParams.get("search") || "");
+    const [location, setLocation] = useState(searchParams.get("location") || "");
+
     const [filters, setFilters] = useState({
         gender: "",
         experience: 0,
@@ -35,18 +37,28 @@ function MyDoctors() {
         sortBy: filters.sortBy,
         page
     });
+
     useEffect(() => {
-        if (data?.doctors) {
-            if (page === 1) {
-                setAllDoctors(data.doctors);
-                console.log("Doctors: ", allDoctors.length);
-            } else {
-                setAllDoctors(prev => [...prev, ...data.doctors]);
-            }
+        setSearch(searchParams.get("search") || "");
+        setLocation(searchParams.get("location") || "");
+    }, [searchParams]);
 
+    useEffect(() => {
+        if (!data?.doctors) return;
+
+        if (page === 1) {
+            setAllDoctors(data.doctors);
+        } else {
+            setAllDoctors(prev => {
+                const ids = new Set(prev.map(d => d._id));
+
+                return [
+                    ...prev,
+                    ...data.doctors.filter(d => !ids.has(d._id))
+                ];
+            });
         }
-
-    }, [data]);
+    }, [data, page]);
 
     useEffect(() => {
         setPage(1);
@@ -80,12 +92,20 @@ function MyDoctors() {
 
     }, [page, data?.totalPages]);
 
+
     if (isLoading) {
         return <h2 className="text-center mt-5">Loading...</h2>;
     }
 
     if (error) {
-        return <h2 className="text-center mt-5">Error fetching doctors.</h2>;
+        return (
+            <>
+            <h2 className="text-center mt-5">Please Login to fetch the Doctors.</h2>
+            <div className="container w-50">
+                <Login />
+            </div>
+            </>            
+        );
     }
 
     return (
@@ -149,7 +169,6 @@ function MyDoctors() {
                                             style={{ cursor: "pointer" }}
                                         // onClick={() => navigate(`/doctor/${doctor._id}`)}
                                         >
-                                            <div className="">
 
                                                 <div className="row align-items-center">
 
@@ -167,9 +186,6 @@ function MyDoctors() {
                                                                 className="view-profile"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
-
-                                                                    // later
-                                                                    // navigate(`/doctor/${doctor._id}`);
                                                                 }}
                                                             >
                                                                 View Profile
@@ -226,22 +242,6 @@ function MyDoctors() {
                                                             )}
                                                         </div>
 
-                                                        {/* <div className="mydoctor-rating">
-
-                                                            <span className="rating-box">
-
-                                                                👍 96%
-
-                                                            </span>
-
-                                                            <span className="story">
-
-                                                                50 Patient Stories
-
-                                                            </span>
-
-                                                        </div> */}
-
                                                     </div>
 
                                                     {/* Right */}
@@ -277,7 +277,6 @@ function MyDoctors() {
 
                                                 </div>
 
-                                            </div>
                                         </div>
                                     </div>
 
