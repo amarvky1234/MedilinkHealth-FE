@@ -14,38 +14,46 @@ function DoctorDetails() {
     const [bookingDetails, setBookingDetails] = useState(null);
     const [bookAppointment] = useBookAppointmentMutation();
 
-    // const handleBook = async () => {
-    //     if (!date || !time) {
-    //         alert("Please select date and time.");
-    //         return;
-    //     }
+    const getTodayDate = () => {
+        const today = new Date();
+        return today.toISOString().split('T')[0];
+    };
 
-    //     try {
-    //         await bookAppointment({
-    //             doctorId: doctor._id,
-    //             appointmentDate: date,
-    //             appointmentTime: time
-    //         }).unwrap();
+    const isValidDateTime = () => {
+        if(!date || !time) {
+            alert("Please select date and time.");
+            return false;
+        }
 
-    //         setBookingDetails({
-    //             date,
-    //             time,
-    //         });
+        const selectedDateTime = new Date(`${date}T${convertTo24Hour(time)}`);
+        const now = new Date();
 
-    //         setSuccess(true);
+        if(selectedDateTime <= now) {
+            alert("Please select a future date and time.")
+            return false;
+        }
 
-    //         // Optional: Clear the form
-    //         setDate("");
-    //         setTime("");
-    //     } catch (err) {
-    //         setSuccess(false);
-    //         //alert("Booking failed");
-    //         alert("Booking failed");
-    //     }
-    // };
+        return true;
+    };
 
+    const convertTo24Hour = (time12) => {
+        const [time, period] = time12.split(' ');
+        let [hours, minutes] = time.split(':');
+
+        if(period === 'PM' && hours !== '12') {
+            hours = parseInt(hours) + 12;
+        }else if (period === 'AM' && hours === '12') {
+            hours = '00';
+        }
+
+        return `${hours.toString().padStart(2, '0')}:${minutes}`;
+    }
 
     const handleBook = async () => {
+        if (!isValidDateTime()) {
+            return;
+        }
+        
         try {
             await bookAppointment({
                 doctorId: doctor._id,
