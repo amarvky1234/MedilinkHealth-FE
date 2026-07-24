@@ -17,6 +17,7 @@ import MyDoctors from './features/finddoctors/MyDoctors.jsx';
 import Medicines from './features/medicines/Medicines.jsx';
 import ProductDescription from './features/medicines/ordermedicine/ProductDescription.jsx';
 import DoctorDetails from './features/finddoctors/DoctorDetails.jsx';
+import DoctorRegister from './features/loginandsignup/DoctorRegister.jsx';
 
 const router = createBrowserRouter([
     {
@@ -66,8 +67,12 @@ const router = createBrowserRouter([
         element: <ProductDescription />,
     },
     {
-    path: "/doctor/:id",
-    element: <DoctorDetails />
+        path: "/doctor/:id",
+        element: <DoctorDetails />
+    },
+    {
+        path: "/doctor-register",
+        element: <DoctorRegister />
     },
 ])
 

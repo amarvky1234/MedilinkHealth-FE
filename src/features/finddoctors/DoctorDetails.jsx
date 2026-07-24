@@ -3,6 +3,7 @@ import { useGetDoctorByIdQuery } from "../../services/doctorService";
 import { useBookAppointmentMutation } from "../../services/appointmentService";
 import Navbar from "../../components/Navbar";
 import Swal from "sweetalert2";
+import { getDoctorImage } from "../../utils/imageHelper";
 
 import "./css/doctordetails.css";
 import { useState } from "react";
@@ -19,21 +20,9 @@ function DoctorDetails() {
         return today.toISOString().split('T')[0];
     };
 
-    const isValidDateTime = () => {
-        if(!date || !time) {
-            alert("Please select date and time.");
-            return false;
-        }
-
-        const selectedDateTime = new Date(`${date}T${convertTo24Hour(time)}`);
+    const getCurrentTime = () => {
         const now = new Date();
-
-        if(selectedDateTime <= now) {
-            alert("Please select a future date and time.")
-            return false;
-        }
-
-        return true;
+        return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
     };
 
     const convertTo24Hour = (time12) => {
@@ -42,18 +31,27 @@ function DoctorDetails() {
 
         if(period === 'PM' && hours !== '12') {
             hours = parseInt(hours) + 12;
-        }else if (period === 'AM' && hours === '12') {
+        } else if (period === 'AM' && hours === '12') {
             hours = '00';
         }
 
         return `${hours.toString().padStart(2, '0')}:${minutes}`;
-    }
+    };
+
+    const isTimePast = (timeStr) => {
+        if(date !== getTodayDate()) return false; // Only disable for today
+        
+        const currentTime = getCurrentTime();
+        const timeIn24 = convertTo24Hour(timeStr);
+        return timeIn24 <= currentTime;
+    };
 
     const handleBook = async () => {
-        if (!isValidDateTime()) {
+        if (!date || !time) {
+            alert("Please select date and time.");
             return;
         }
-        
+
         try {
             await bookAppointment({
                 doctorId: doctor._id,
@@ -76,7 +74,7 @@ function DoctorDetails() {
             Swal.fire({
                 icon: "error",
                 title: "Booking Failed",
-                text: "Please try again.",
+                text: err?.data?.message || "Please try again.",
             });
         }
     };
@@ -113,7 +111,7 @@ function DoctorDetails() {
                                 <div className="d-flex">
 
                                     <img
-                                        src={doctor.photo}
+                                        src={getDoctorImage(doctor.photo)}
                                         alt={doctor.name}
                                         className="doctor-img"
                                     />
@@ -167,7 +165,11 @@ function DoctorDetails() {
                                         name="date"
                                         className="form-control mb-3"
                                         value={date}
-                                        onChange={(e) => setDate(e.target.value)}
+                                        min={getTodayDate()}
+                                        onChange={(e) => {
+                                            setDate(e.target.value)
+                                            setTime("")
+                                        }}
                                     />
 
                                     <label>Select Time</label>
@@ -177,11 +179,36 @@ function DoctorDetails() {
                                         onChange={(e) => setTime(e.target.value)}
                                     >
                                         <option>select time</option>
-                                        <option>10:00 AM</option>
-                                        <option>12:00 PM</option>
-                                        <option>02:00 PM</option>
-                                        <option>04:00 PM</option>
-                                        <option>07:00 PM</option>
+                                        <option
+                                            value="10:00 AM"
+                                            disabled={isTimePast("10:00 AM")}
+                                        >
+                                            10:00 AM
+                                        </option>
+                                        <option
+                                            value="12:00 PM"
+                                            disabled={isTimePast("12:00 PM")}
+                                        >
+                                            12:00 AM
+                                        </option>
+                                        <option
+                                            value="02:00 PM"
+                                            disabled={isTimePast("02:00 PM")}
+                                        >
+                                            02:00 PM
+                                        </option>
+                                        <option
+                                            value="04:00 PM"
+                                            disabled={isTimePast("04:00 PM")}
+                                        >
+                                            04:00 PM
+                                        </option>
+                                        <option
+                                            value="07:00 PM"
+                                            disabled={isTimePast("07:00 PM")}
+                                        >
+                                            07:00 PM
+                                        </option>
 
                                     </select>
 
@@ -202,27 +229,6 @@ function DoctorDetails() {
                 </div>
 
             </div>
-            {/* {success && (
-                <div className="alert alert-success mt-3">
-                    <h5>Appointment Confirmed 🎉</h5>
-
-                    <p>
-                        <strong>Doctor:</strong> {doctor.name}
-                    </p>
-
-                    <p>
-                        <strong>Hospital:</strong> {doctor.hospital}
-                    </p>
-
-                    <p>
-                        <strong>Date:</strong> {bookingDetails?.date}
-                    </p>
-
-                    <p>
-                        <strong>Time:</strong> {bookingDetails?.time}
-                    </p>
-                </div>
-            )} */}
         </>
     );
 }

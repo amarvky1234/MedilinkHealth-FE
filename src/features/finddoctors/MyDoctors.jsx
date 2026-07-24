@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import FindandBook from "./finddoctorcomps/FindandBook";
 import SearchDoctors from "./finddoctorcomps/SearchDoctors";
 import FooterComp from "../../components/FooterComp";
+import { getDoctorImage } from "../../utils/imageHelper";
 
 import "./css/mydoctors.css";
 import FilterDoctor from "./finddoctorcomps/FilterDoctors";
@@ -177,7 +178,7 @@ function MyDoctors() {
                                                         <div className="doctor-image-wrapper">
 
                                                             <img
-                                                                src={doctor.photo}
+                                                                src={getDoctorImage(doctor.photo)}
                                                                 alt={doctor.name}
                                                                 className="mydoctor-photo"
                                                             />

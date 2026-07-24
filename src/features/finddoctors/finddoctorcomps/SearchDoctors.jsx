@@ -331,9 +331,9 @@ function SearchDoctors() {
                                                     className="see-all-item"
                                                     onClick={() => {
                                                         setShowAllDoctors(true);
-                                                        navigate(
-                                                            `/mydoctors?location=${encodeURIComponent(locationInput)}&search=${encodeURIComponent(searchInput)}`
-                                                        );
+                                                        // navigate(
+                                                        //     `/mydoctors?location=${encodeURIComponent(locationInput)}&search=${encodeURIComponent(searchInput)}`
+                                                        // );
                                                     }}
                                                 >
                                                     See All ({filteredDoctors.length})

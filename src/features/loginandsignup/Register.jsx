@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSendOTPMutation } from "../../services/otpService";
 import { useAddUserMutation } from "../../services/userService";
+import { Link } from "react-router-dom";
 
 function Register({ onSendOtp }) {
     const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ function Register({ onSendOtp }) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
+    const [isDoctor, setIsDoctor] = useState(false);
     const [addUserFn] = useAddUserMutation();
     const [sendOTPFn] = useSendOTPMutation();
 
@@ -37,15 +39,25 @@ function Register({ onSendOtp }) {
         }
     };
 
-    return(
+    return (
         <div className="card shadow-sm p-4">
             {error && (
                 <div className="alert alert-danger mt-3">
                     {error}
                 </div>
             )}
-            
-            <form onSubmit={(ev) => {handleSendOtp(ev)}} encType="application/json">
+
+            <form onSubmit={(ev) => { handleSendOtp(ev) }} encType="application/json">
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                    <h4 className="mb-0">Join Medilink</h4>
+
+                    <div>
+                        <span>Are you a doctor? </span>
+                        <Link to="/doctor-register" className="text-decoration-none fw-semibold">
+                            Register Here
+                        </Link>
+                    </div>
+                </div>
                 <div className="mb-3">
                     <label className="form-label">Full Name</label>
                     <input
@@ -65,6 +77,19 @@ function Register({ onSendOtp }) {
                         className="form-control"
                         placeholder="Email address"
                         onChange={(ev) => setEmail(ev.target.value)}
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Phone Number</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        className="form-control"
+                        placeholder="Enter your phone number"
+                        pattern="[0-9]{10}"
+                        maxLength={10}
+                        required
                     />
                 </div>
                 <div className="mb-3">
