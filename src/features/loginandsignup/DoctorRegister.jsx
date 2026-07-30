@@ -39,8 +39,16 @@ function DoctorRegister() {
         console.log([...formData.entries()]);
 
         try {
+            // const res = await addDoctorFn(formData).unwrap();
+            // console.log(res);
+
             const res = await addDoctorFn(formData).unwrap();
-            console.log(res);
+
+            localStorage.setItem("doctorId", res.doctor._id);
+
+            alert("Doctor Registered Successfully");
+
+            window.location.href = `http://localhost:3300/google/connect/${res.doctor._id}`;
         } catch (err) {
             console.log(err);
         }

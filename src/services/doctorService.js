@@ -18,14 +18,14 @@ export const doctorApi = createApi({
     endpoints: (builder) => ({
 
         getDoctor: builder.query({
-            query: ({ 
-                search = "", 
-                location = "", 
-                gender="", 
-                experience=0, 
-                fee="",
-                sortBy, 
-                page = 1 
+            query: ({
+                search = "",
+                location = "",
+                gender = "",
+                experience = 0,
+                fee = "",
+                sortBy,
+                page = 1
             } = {}) => ({
                 url: "get",
                 method: "GET",
@@ -68,6 +68,21 @@ export const doctorApi = createApi({
             },
         }),
 
+        getDoctorProfile: builder.query({
+            query: () => ({
+                url: "/profile",
+                method: "GET"
+            })
+        }),
+
+        updateSchedule: builder.mutation({
+            query: (schedule) => ({
+                url: "/schedule",
+                method: "PUT",
+                body: schedule
+            })
+        }),
+
     }),
 });
 
@@ -76,4 +91,6 @@ export const {
     useSearchDoctorsQuery,
     useGetDoctorByIdQuery,
     useAddDoctorMutation,
+    useGetDoctorProfileQuery,
+    useUpdateScheduleMutation,
 } = doctorApi;

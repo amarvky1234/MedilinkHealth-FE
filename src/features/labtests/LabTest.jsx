@@ -1,11 +1,15 @@
 import React from "react";
 import BookLabTests from "./BookLabTests";
+import Navbar from "../../components/Navbar";
 
 function LabTest() {
     return(
-        <div>
-            <BookLabTests />
-        </div>
+        <> 
+            <Navbar/>
+            <div>
+                <BookLabTests />
+            </div>
+        </>
     )
 }
 

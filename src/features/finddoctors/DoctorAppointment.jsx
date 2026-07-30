@@ -4,11 +4,11 @@ import { useBookAppointmentMutation } from "../../services/appointmentService";
 import Navbar from "../../components/Navbar";
 import Swal from "sweetalert2";
 import { getDoctorImage } from "../../utils/imageHelper";
-
-import "./css/doctordetails.css";
+import "./css/doctorappointment.css";
 import { useState } from "react";
+import { generateSlots } from "../../utils/generateSlots";
 
-function DoctorDetails() {
+function DoctorAppointment() {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [success, setSuccess] = useState(false);
@@ -29,7 +29,7 @@ function DoctorDetails() {
         const [time, period] = time12.split(' ');
         let [hours, minutes] = time.split(':');
 
-        if(period === 'PM' && hours !== '12') {
+        if (period === 'PM' && hours !== '12') {
             hours = parseInt(hours) + 12;
         } else if (period === 'AM' && hours === '12') {
             hours = '00';
@@ -39,8 +39,8 @@ function DoctorDetails() {
     };
 
     const isTimePast = (timeStr) => {
-        if(date !== getTodayDate()) return false; // Only disable for today
-        
+        if (date !== getTodayDate()) return false; // Only disable for today
+
         const currentTime = getCurrentTime();
         const timeIn24 = convertTo24Hour(timeStr);
         return timeIn24 <= currentTime;
@@ -86,13 +86,12 @@ function DoctorDetails() {
         error,
     } = useGetDoctorByIdQuery(id);
 
+
     if (isLoading) return <h2>Loading...</h2>;
-
     if (error) return <h2>Error...</h2>;
-
     if (!doctor) return <h2>Doctor Not Found</h2>;
 
-
+    const slots = generateSlots(doctor);
     return (
         <>
             <Navbar />
@@ -127,11 +126,9 @@ function DoctorDetails() {
                                         <p>
                                             {doctor.experience} Years Experience
                                         </p>
-
                                         <p>
                                             {doctor.qualification}
                                         </p>
-
                                         <p>
                                             <b>Hospital :</b> {doctor.hospital}
                                         </p>
@@ -174,43 +171,31 @@ function DoctorDetails() {
 
                                     <label>Select Time</label>
 
-                                    <select className="form-select mb-3"
-                                        value={time}
-                                        onChange={(e) => setTime(e.target.value)}
-                                    >
-                                        <option>select time</option>
-                                        <option
-                                            value="10:00 AM"
-                                            disabled={isTimePast("10:00 AM")}
+                                    {slots.length === 0 ? (
+                                        <div className="alert alert-warning">
+                                            Doctor has not configured availability yet.
+                                        </div>
+                                    ) : (
+                                        <select
+                                            className="form-select mb-3"
+                                            value={time}
+                                            onChange={(e) => setTime(e.target.value)}
                                         >
-                                            10:00 AM
-                                        </option>
-                                        <option
-                                            value="12:00 PM"
-                                            disabled={isTimePast("12:00 PM")}
-                                        >
-                                            12:00 AM
-                                        </option>
-                                        <option
-                                            value="02:00 PM"
-                                            disabled={isTimePast("02:00 PM")}
-                                        >
-                                            02:00 PM
-                                        </option>
-                                        <option
-                                            value="04:00 PM"
-                                            disabled={isTimePast("04:00 PM")}
-                                        >
-                                            04:00 PM
-                                        </option>
-                                        <option
-                                            value="07:00 PM"
-                                            disabled={isTimePast("07:00 PM")}
-                                        >
-                                            07:00 PM
-                                        </option>
+                                            <option value="">
+                                                Select Time
+                                            </option>
 
-                                    </select>
+                                            {slots.map((slot) => (
+                                                <option
+                                                    key={slot}
+                                                    value={slot}
+                                                    disabled={isTimePast(slot)}
+                                                >
+                                                    {slot}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    )}
 
                                     <button className="btn btn-primary w-100"
                                         onClick={handleBook}
@@ -233,4 +218,4 @@ function DoctorDetails() {
     );
 }
 
-export default DoctorDetails;
+export default DoctorAppointment;

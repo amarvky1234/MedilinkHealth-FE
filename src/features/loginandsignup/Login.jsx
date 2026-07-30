@@ -79,6 +79,7 @@ function Login() {
 
                 if (loginRes?.token) {
                     localStorage.setItem("token", loginRes.token);
+                    localStorage.setItem("role", loginRes.role)
                     setOtpPending(false);
                     setMessage("OTP verified successfully.");
                     navigate("/mydoctors");
@@ -100,6 +101,7 @@ function Login() {
 
             if (data?.token) {
                 localStorage.setItem("token", data.token);
+                localStorage.setItem("role", data.role);
                 navigate("/mydoctors");
             } else if (data?.msg === "Email OTP verification pending" || data?.requiresOtp) {
                 setUseOtpLogin(true);

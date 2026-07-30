@@ -16,8 +16,10 @@ import ConsultDoctor from './components/homepagecomponent/ConsultDoctor.jsx';
 import MyDoctors from './features/finddoctors/MyDoctors.jsx';
 import Medicines from './features/medicines/Medicines.jsx';
 import ProductDescription from './features/medicines/ordermedicine/ProductDescription.jsx';
-import DoctorDetails from './features/finddoctors/DoctorDetails.jsx';
+import DoctorAppointment from './features/finddoctors/DoctorAppointment.jsx';
 import DoctorRegister from './features/loginandsignup/DoctorRegister.jsx';
+import DoctorProfile from './features/finddoctors/DoctorProfile.jsx';
+import DoctorSchedule from './features/finddoctors/DoctorSchedule.jsx';
 
 const router = createBrowserRouter([
     {
@@ -68,11 +70,19 @@ const router = createBrowserRouter([
     },
     {
         path: "/doctor/:id",
-        element: <DoctorDetails />
+        element: <DoctorAppointment />
     },
     {
         path: "/doctor-register",
         element: <DoctorRegister />
+    },
+    {
+        path: "/doctor-profile",
+        element: <DoctorProfile />
+    },
+    {
+        path: "/doctor-schedule",
+        element: <DoctorSchedule />
     },
 ])
 
