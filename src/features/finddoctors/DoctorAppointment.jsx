@@ -7,6 +7,7 @@ import { getDoctorImage } from "../../utils/imageHelper";
 import "./css/doctorappointment.css";
 import { useState } from "react";
 import { generateSlots } from "../../utils/generateSlots";
+import { isWorkingDay } from "../../utils/isWorkingDay";
 
 function DoctorAppointment() {
     const [date, setDate] = useState("");
@@ -164,8 +165,19 @@ function DoctorAppointment() {
                                         value={date}
                                         min={getTodayDate()}
                                         onChange={(e) => {
-                                            setDate(e.target.value)
-                                            setTime("")
+                                            const selectedDate = e.target.value;
+                                            if (!isWorkingDay(selectedDate, doctor.workingDays)) {
+                                                Swal.fire({
+                                                    icon: "warning",
+                                                    title: "Doctor Unavailable",
+                                                    text: "Doctor does not work on this day.",
+                                                });
+                                                setDate("");
+                                                setTime("");
+                                                return;
+                                            }
+                                            setDate(selectedDate);
+                                            setTime("");
                                         }}
                                     />
 
