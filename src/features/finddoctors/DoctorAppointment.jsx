@@ -8,9 +8,11 @@ import "./css/doctorappointment.css";
 import { useState } from "react";
 import { generateSlots } from "../../utils/generateSlots";
 import { isWorkingDay } from "../../utils/isWorkingDay";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function DoctorAppointment() {
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(null);
     const [time, setTime] = useState("");
     const [success, setSuccess] = useState(false);
     const [bookingDetails, setBookingDetails] = useState(null);
@@ -56,7 +58,7 @@ function DoctorAppointment() {
         try {
             await bookAppointment({
                 doctorId: doctor._id,
-                appointmentDate: date,
+                appointmentDate: date.toISOString().split("T")[0],
                 appointmentTime: time,
             }).unwrap();
 
@@ -66,7 +68,7 @@ function DoctorAppointment() {
                 html: `
                     <b>Doctor:</b> ${doctor.name}<br>
                     <b>Hospital:</b> ${doctor.hospital}<br>
-                    <b>Date:</b> ${date}<br>
+                    <b>Date:</b> ${date.toISOString().split("T")[0]}<br>
                     <b>Time:</b> ${time}
                 `,
                 confirmButtonText: "OK",
@@ -158,27 +160,20 @@ function DoctorAppointment() {
 
                                     <label>Select Date</label>
 
-                                    <input
-                                        type="date"
-                                        name="date"
-                                        className="form-control mb-3"
-                                        value={date}
-                                        min={getTodayDate()}
-                                        onChange={(e) => {
-                                            const selectedDate = e.target.value;
-                                            if (!isWorkingDay(selectedDate, doctor.workingDays)) {
-                                                Swal.fire({
-                                                    icon: "warning",
-                                                    title: "Doctor Unavailable",
-                                                    text: "Doctor does not work on this day.",
-                                                });
-                                                setDate("");
-                                                setTime("");
-                                                return;
-                                            }
+                                    <DatePicker
+                                        selected={date}
+                                        onChange={(selectedDate) => {
                                             setDate(selectedDate);
                                             setTime("");
                                         }}
+                                        minDate={new Date()}
+                                        dateFormat="yyyy-MM-dd"
+                                        className="form-control mb-3"
+                                        placeholderText="Select Appointment Date"
+                                        // Add this line
+                                        filterDate={(selectedDate) =>
+                                            isWorkingDay(selectedDate, doctor.workingDays)
+                                        }
                                     />
 
                                     <label>Select Time</label>
@@ -214,7 +209,6 @@ function DoctorAppointment() {
                                     >
                                         Book Appointment
                                     </button>
-
                                 </div>
 
                             </div>
